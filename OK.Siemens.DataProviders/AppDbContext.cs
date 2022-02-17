@@ -9,4 +9,9 @@ public class AppDbContext: DbContext
     { }
 
     public virtual DbSet<DataRecord> DataRecords { get; set; } = null!;
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<DataRecord>().HasNoKey();
+    }
 }
