@@ -23,10 +23,10 @@ public class DbContextFixture
         // test data
         _data = new List<DataRecord>
         {
-            new DataRecord{TagName = "Test", Value = 1.1, TimeStamp = DateTime.Parse("01.01.1970 07:00:00")},
-            new DataRecord{TagName = "Test", Value = 2.2, TimeStamp = DateTime.Parse("01.01.1970 07:01:00")},
-            new DataRecord{TagName = "Test", Value = 3.3, TimeStamp = DateTime.Parse("01.01.1970 07:03:00")},
-            new DataRecord{TagName = "Test", Value = 4.4, TimeStamp = DateTime.Parse("01.01.1970 07:04:00")}
+            new DataRecord{TagName = "Test", Value = 1.1f, TimeStamp = DateTime.Parse("01.01.1970 07:00:00")},
+            new DataRecord{TagName = "Test", Value = 2.2f, TimeStamp = DateTime.Parse("01.01.1970 07:01:00")},
+            new DataRecord{TagName = "Test", Value = 3.3f, TimeStamp = DateTime.Parse("01.01.1970 07:03:00")},
+            new DataRecord{TagName = "Test", Value = 4.4f, TimeStamp = DateTime.Parse("01.01.1970 07:04:00")}
         }.AsQueryable();
         
         // mocking DbContext then
@@ -93,8 +93,8 @@ public class PgsqlDataRecordsRepositoryTests: IClassFixture<DbContextFixture>
     {
         var data = new List<DataRecord>
         {
-            new DataRecord{TagName = "Test", Value = 6.6, TimeStamp = DateTime.Parse("01.01.1970 07:05:00")},
-            new DataRecord{TagName = "Test", Value = 7.7, TimeStamp = DateTime.Parse("01.01.1970 07:06:00")}
+            new DataRecord{TagName = "Test", Value = 6.6f, TimeStamp = DateTime.Parse("01.01.1970 07:05:00")},
+            new DataRecord{TagName = "Test", Value = 7.7f, TimeStamp = DateTime.Parse("01.01.1970 07:06:00")}
         };
         var countPrev = await _fixture.Repository.GetRecordsBetweenTime(DateTime.Parse("01.01.1970 07:00:00"), DateTime.Now);
         
