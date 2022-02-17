@@ -56,7 +56,12 @@ public class TimescaleHelper
         }
     }
 
-    
+    /// <summary>
+    /// Converts table to hypertable
+    /// </summary>
+    /// <param name="connectionString"></param>
+    /// <param name="tableName"></param>
+    /// <param name="columnName"></param>
     public void ChangeToHypertable(string connectionString, string tableName, string columnName)
     {
         using (var conn = getConnection(connectionString))
