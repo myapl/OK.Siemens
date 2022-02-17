@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OK.Siemens.Models", "OK.Siemens.Models\OK.Siemens.Models.csproj", "{33895354-B009-4187-9C39-B56C6FDCCF84}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OK.Siemens.DataProviders", "OK.Siemens.DataProviders\OK.Siemens.DataProviders.csproj", "{A074998B-02D8-4DAC-92FF-1FF9FAEB5BFE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{33895354-B009-4187-9C39-B56C6FDCCF84}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{33895354-B009-4187-9C39-B56C6FDCCF84}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{33895354-B009-4187-9C39-B56C6FDCCF84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A074998B-02D8-4DAC-92FF-1FF9FAEB5BFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A074998B-02D8-4DAC-92FF-1FF9FAEB5BFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A074998B-02D8-4DAC-92FF-1FF9FAEB5BFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A074998B-02D8-4DAC-92FF-1FF9FAEB5BFE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
