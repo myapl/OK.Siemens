@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using OK.Siemens.DataProviders;
+using OK.Siemens.DataProviders.Interfaces;
 using OK.Siemens.PlcDataWorker;
 using Serilog;
 
@@ -6,8 +9,11 @@ var host = Host.CreateDefaultBuilder(args)
     {
         config.AddJsonFile("appsettings.logs.json");
     })
-    .ConfigureServices(services =>
+    .ConfigureServices((hostBuilder, services) =>
     {
+        services.AddDbContextFactory<AppDbContext>(options =>
+            options.UseNpgsql(hostBuilder.Configuration["PgsqlConnectionString"]));
+        services.AddScoped<IDataRecordsRepository, PgsqlDataRecordsRepository>();
         services.AddHostedService<Worker>();
     })
     .UseSerilog((hostContext, loggerConfiguration) =>
