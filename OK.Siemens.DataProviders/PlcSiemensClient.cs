@@ -1,10 +1,10 @@
 ﻿namespace OK.Siemens.DataProviders;
 
-public class PlcDataProvider
+public class PlcSiemensClient
 {
     private readonly Sharp7 _plc;
 
-    public PlcDataProvider()
+    public PlcSiemensClient()
     {
         _plc = new Sharp7();
     }
