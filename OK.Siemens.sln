@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OK.Siemens.DataProviders.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OK.Siemens.PlcDataWorker", "OK.Siemens.PlcDataWorker\OK.Siemens.PlcDataWorker.csproj", "{C136823A-9CE5-490A-9A1B-D07A2969EDA8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OK.Siemens.Utils.TimescaleDB", "OK.Siemens.Utils.TimescaleDB\OK.Siemens.Utils.TimescaleDB.csproj", "{D2A9F0E0-E428-4BAC-9BDC-E770FCFE2133}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{C136823A-9CE5-490A-9A1B-D07A2969EDA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C136823A-9CE5-490A-9A1B-D07A2969EDA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C136823A-9CE5-490A-9A1B-D07A2969EDA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2A9F0E0-E428-4BAC-9BDC-E770FCFE2133}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2A9F0E0-E428-4BAC-9BDC-E770FCFE2133}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2A9F0E0-E428-4BAC-9BDC-E770FCFE2133}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2A9F0E0-E428-4BAC-9BDC-E770FCFE2133}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
