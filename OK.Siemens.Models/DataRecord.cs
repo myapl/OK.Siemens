@@ -2,5 +2,5 @@
 
 public class DataRecord: DataRecordBase
 {
-    public double Value { get; set; }
+    public float Value { get; set; }
 }
