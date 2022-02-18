@@ -34,7 +34,7 @@ public class PlcSiemensClient: IDisposable, IPlcSiemensClient
     public int Read()
     {
         var data = new byte[1024];
-        var error = _client.ReadArea(S7Consts.S7AreaDB, 2, 0, 2, S7Consts.S7WLReal, data);
+        var error = _client.ReadArea(S7Consts.S7AreaDB, 2, 0, 4, S7Consts.S7WLReal, data);
         if (error == 0)
             _logger.LogInformation("Success reading data from PLC [{address}]", _plcParameters.Address);
         else

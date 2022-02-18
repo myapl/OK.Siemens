@@ -7,11 +7,13 @@ public class Worker : BackgroundService
 {
     private readonly ILogger<Worker> _logger;
     private readonly IPlcSiemensClient _client;
+    private readonly IDataRecordsRepository _repository;
 
-    public Worker(IPlcSiemensClient client, ILogger<Worker> logger)
+    public Worker(IPlcSiemensClient client, IDataRecordsRepository repository, ILogger<Worker> logger)
     {
         _logger = logger;
         _client = client;
+        _repository = repository;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -25,7 +27,7 @@ public class Worker : BackgroundService
 
             if (_client.IsConnected)
             {
-                _client.Read();
+                var error = _client.Read();
             }
             //_logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
             await Task.Delay(100, stoppingToken);

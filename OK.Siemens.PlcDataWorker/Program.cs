@@ -14,7 +14,7 @@ var host = Host.CreateDefaultBuilder(args)
     {
         services.AddDbContextFactory<AppDbContext>(options =>
             options.UseNpgsql(hostBuilder.Configuration["PgsqlConnectionString"]));
-        services.AddScoped<IDataRecordsRepository, PgsqlDataRecordsRepository>();
+        services.AddSingleton<IDataRecordsRepository, PgsqlDataRecordsRepository>();
         services.Configure<PlcParameters>(hostBuilder.Configuration.GetSection(PlcParameters.Parameters));
         services.AddSingleton<IPlcSiemensClient, PlcSiemensClient>();
         services.AddHostedService<Worker>();
