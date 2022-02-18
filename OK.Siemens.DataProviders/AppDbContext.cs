@@ -12,6 +12,7 @@ public class AppDbContext: DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<DataRecord>().HasNoKey();
+        modelBuilder.Entity<DataRecord>().Property(f => f.Id).ValueGeneratedOnAdd();
+        modelBuilder.Entity<DataRecord>().HasKey(table => new {table.Id, table.TimeStamp});
     }
 }

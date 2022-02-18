@@ -23,4 +23,10 @@
     <ItemGroup>
       <ProjectReference Include="..\OK.Siemens.DataProviders\OK.Siemens.DataProviders.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <None Update="tags.csv">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
 </Project>

@@ -31,15 +31,44 @@ public class PlcSiemensClient: IDisposable, IPlcSiemensClient
         return error;
     }
 
-    public int Read()
+    public (int error, IEnumerable<PlcTag> tags) Read(int dbNumber, IList<PlcTag> tagsList)
     {
-        var data = new byte[1024];
-        var error = _client.ReadArea(S7Consts.S7AreaDB, 2, 0, 4, S7Consts.S7WLReal, data);
+        const int bufferSize = 10240;
+        var data = new byte[bufferSize];
+        var readDataSize = 0;
+        var error = _client.ReadArea(S7Consts.S7AreaDB, dbNumber, 0, CalculateBytesAmount(tagsList.Last(), bufferSize), S7Consts.S7WLByte, data, ref readDataSize);
+
         if (error == 0)
-            _logger.LogInformation("Success reading data from PLC [{address}]", _plcParameters.Address);
+        {
+            _logger.LogDebug("Success reading from PLC [{address}] data of {readDataSize} bytes", _plcParameters.Address, readDataSize);
+            foreach (var tag in tagsList)
+            {
+                switch (tag.DataType)
+                {
+                    case DataType.Bool:
+                        tag.Data = S7.GetBitAt(data, tag.DbAddress.Byte, tag.DbAddress.Bit);
+                        break;
+                    case DataType.Word:
+                        break;
+                    case DataType.DWord:
+                        break;
+                    case DataType.UInt:
+                        tag.Data = S7.GetUIntAt(data, tag.DbAddress.Byte);
+                        break;
+                    case DataType.Int:
+                        break;
+                    case DataType.Real:
+                        tag.Data = S7.GetRealAt(data, tag.DbAddress.Byte);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
         else
             _logger.LogWarning("Error reading data from PLC [{address}], error [{error}]", _plcParameters.Address, error);
-        return error;
+        
+        return (error, tagsList);
     }
     
     public void Dispose()
@@ -47,5 +76,27 @@ public class PlcSiemensClient: IDisposable, IPlcSiemensClient
         _logger.LogInformation("PLC disconnecting...");
         _client.Disconnect();
         _logger.LogInformation("Disconnected");
+    }
+
+    private int CalculateBytesAmount(PlcTag lastTag, int bufferSize)
+    {
+        switch (lastTag.DataType)
+        {
+            case DataType.Bool: case DataType.Word: case DataType.UInt: case DataType.Int:
+                if (lastTag.DbAddress.Byte + 2 > bufferSize)
+                    throw new ArgumentOutOfRangeException(nameof(lastTag), 
+                        $"Reading data size is more then buffer {bufferSize} bytes size");
+                return lastTag.DbAddress.Byte + 2;
+            
+            case DataType.DWord: case DataType.Real:
+                if (lastTag.DbAddress.Byte + 4 > bufferSize)
+                    throw new ArgumentOutOfRangeException(nameof(lastTag), 
+                        $"Reading data size is more then buffer {bufferSize} bytes size");
+                return lastTag.DbAddress.Byte + 4;
+            
+            default:
+                throw new ArgumentOutOfRangeException(nameof(lastTag.DataType), 
+                    "Can't calculate amount of reading data for this DataType");
+        }
     }
 }

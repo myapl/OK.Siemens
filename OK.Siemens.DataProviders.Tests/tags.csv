@@ -1,0 +1,6 @@
+ 	VO0101_TE_AIR           	Real 	0.0  	0.0   	False 	True 	True 	True 	False 	 	ВО1.1 - Температура воздуха
+ 	VO0101_TE_SIDE          	Real 	4.0  	0.0   	False 	True 	True 	True 	False 	 	ВО1.1 - Температура ребра
+ 	VO0101_STATE            	UInt 	8.0  	0     	False 	True 	True 	True 	False 	 	ВО1.1 - Состояние
+ 	VO0101_LIQ_VALVE_OPENED 	Bool 	10.0 	false 	False 	True 	True 	True 	False 	 	ВО1.1 - Клапан подачи жидкости открыт
+ 	VO0101_SUC_VALVE_OPENED 	Bool 	10.1 	false 	False 	True 	True 	True 	False 	 	ВО1.1 - Клапан отвода паро-жидкости открыт
+ 	VO0201_TE_AIR           	Real 	12.0 	0.0   	False 	True 	True 	True 	False 	 	ВО2.1 - Температура воздуха
