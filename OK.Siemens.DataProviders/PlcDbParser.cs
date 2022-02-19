@@ -39,7 +39,7 @@ public class PlcDbParser : IPlcDbParser
                             tag.DataType = dataType;
                             break;
                         case 3:
-                            tag.DbAddress = SplitDbAddress(field);
+                            tag.DbAddress = SplitDbAddress(field, tag.Tagname);
                             break;
                         case 11:
                             tag.Description = field;
@@ -59,11 +59,11 @@ public class PlcDbParser : IPlcDbParser
         return tagsList;
     }
 
-    private DbAddress SplitDbAddress(string field)
+    private DbAddress SplitDbAddress(string field, string tagname)
     {
         var splintered = field.Split(".");
         _ = TryParse(splintered[0], out var addressByte);
         _ = TryParse(splintered[1], out var addressBit);
-        return new DbAddress{Bit = addressBit, Byte = addressByte};
+        return new DbAddress{Bit = addressBit, Byte = addressByte}; //, Tagname = tagname};
     }
 }
