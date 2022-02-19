@@ -1,20 +1,30 @@
-﻿namespace OK.Siemens.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+namespace OK.Siemens.Models;
 
 public class PlcTag
 {
+    public int Id { get; set; }
     public string Tagname { get; set; } = "";
     public DataType DataType { get; set; }
     public DbAddress DbAddress { get; set; } = new();
     public string Description { get; set; } = "";
-    public object Data { get; set; } = "";
+    [NotMapped] public object Data { get; set; } = "";
+    
+    public List<DataRecord> DataRecords { get; set; } = new();
+    
+    
 
     public static explicit operator DataRecord(PlcTag plcTag)
     {
         var item = new DataRecord
         {
-            TagName = plcTag.Tagname,
+            TagName = plcTag,
             TimeStamp = DateTime.UtcNow
         };
+
+        plcTag.DataRecords.Add(item);
 
         switch (plcTag.DataType)
         {
@@ -23,10 +33,8 @@ public class PlcTag
                 break;
             case DataType.Word:
                 throw new NotImplementedException();
-                break;
             case DataType.DWord:
                 throw new NotImplementedException();
-                break;
             case DataType.UInt:
                 item.Value = (ushort) plcTag.Data;
                 break;
@@ -44,7 +52,7 @@ public class PlcTag
     }
 }
 
-public class DbAddress
+[Owned] public class DbAddress
 {
     public int Byte { get; set; }
     public int Bit { get; set; }
