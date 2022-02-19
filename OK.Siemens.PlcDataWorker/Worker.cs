@@ -20,9 +20,12 @@ public class Worker : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        var tagsList = _plcDbParser.ParseCsvFile("tags.csv");
         var dataRecords = new List<DataRecord>();
-        
+
+        await _repository.AddTagsAsync(_plcDbParser.ParseCsvFile("tags.csv"));
+
+        var tagsList = await _repository.GetTagsAsync();
+
         while (!stoppingToken.IsCancellationRequested)
         {
             if (!_client.IsConnected)
@@ -32,16 +35,15 @@ public class Worker : BackgroundService
         
             if (_client.IsConnected)
             {
-                var (error, tags) = _client.Read(20, tagsList);
+                var (error, tags) = _client.Read(20, tagsList.ToList());
 
                 if (error == 0)
                 {
                     dataRecords.Clear();
+
                     foreach (var tag in tags)
-                    {
-                        //if (dataRecords.Count < 2)
-                            dataRecords.Add((DataRecord)tag);
-                    }
+                        dataRecords.Add((DataRecord) tag);
+
                     await _repository.AddDataRecordsAsync(dataRecords);
                 }
             }
