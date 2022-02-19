@@ -67,14 +67,20 @@ public class TimescaleHelper
     {
         using (var conn = getConnection(connectionString))
         {
-            var sql = $"SELECT create_hypertable('\"{tableName}\"', '{columnName}', chunk_time_interval => {chunkTimeInterval});";
-
+            var sql = "CREATE EXTENSION IF NOT EXISTS timescaledb;";
+            using (var cmd = new NpgsqlCommand(sql, conn))
+            {
+                cmd.ExecuteNonQuery();
+                Console.Out.WriteLine($"Extension timescaledb created!");
+            }
+            
+            sql = $"SELECT create_hypertable('\"{tableName}\"', '{columnName}', chunk_time_interval => {chunkTimeInterval});";
             using (var cmd = new NpgsqlCommand(sql, conn))
             {
                 cmd.ExecuteNonQuery();
                 Console.Out.WriteLine($"Converted the {tableName} table into a TimescaleDB hypertable!");
-                conn.Close();
             }
+            conn.Close();
         }
     }
 }
