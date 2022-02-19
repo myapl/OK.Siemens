@@ -17,4 +17,16 @@ public interface IDataRecordsRepository
     /// </summary>
     /// <param name="dataRecords"></param>
     Task AddDataRecordsAsync(IEnumerable<DataRecord> dataRecords);
+
+    /// <summary>
+    /// Add plc tags collection to repository
+    /// </summary>
+    /// <param name="tags"></param>
+    Task AddTagsAsync(IEnumerable<PlcTag> tags);
+
+    /// <summary>
+    /// Return all plc tags from repository
+    /// </summary>
+    /// <returns></returns>
+    Task<IQueryable<PlcTag>> GetTagsAsync();
 }
