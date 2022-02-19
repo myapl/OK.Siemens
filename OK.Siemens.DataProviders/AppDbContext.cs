@@ -9,10 +9,12 @@ public class AppDbContext: DbContext
     { }
 
     public virtual DbSet<DataRecord> DataRecords { get; set; } = null!;
+    public virtual DbSet<PlcTag> Tags { get; set; } = null!;
+    //public virtual DbSet<DbAddress> Addresses { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<DataRecord>().Property(f => f.Id).ValueGeneratedOnAdd();
-        //modelBuilder.Entity<DataRecord>().HasKey(table => new {table.Id, table.TimeStamp});
+        modelBuilder.Entity<PlcTag>().Property(f => f.Id).ValueGeneratedOnAdd();
     }
 }
