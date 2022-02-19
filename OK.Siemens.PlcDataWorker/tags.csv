@@ -68,3 +68,122 @@
 	VO01001_SUC_VALVE_OPENED	Bool	118.1	false	False	True	True	True	False		ВО10.1 - Состояние
 	VO01001_HG_VALVE_OPENED	Bool	118.2	false	False	True	True	True	False		ВО10.1 - Клапан подачи жидкости открыт
 	VO01001_DRAIN_VALVE_OPENED	Bool	118.3	false	False	True	True	True	False		ВО10.1 - Клапан отвода паро-жидкости открыт
+	VO01101_TE_AIR	Real	120.0	0.0	False	True	True	True	False		ВО11.1 - Клапан подачи жидкости открыт
+	VO01101_TE_SIDE	Real	124.0	0.0	False	True	True	True	False		ВО11.1 - Клапан отвода паро-жидкости открыт
+	VO01101_STATE	UInt	128.0	0	False	True	True	True	False		ВО11.1 - Температура воздуха
+	VO01101_LIQ_VALVE_OPENED	Bool	130.0	false	False	True	True	True	False		ВО11.1 - Температура ребра
+	VO01101_SUC_VALVE_OPENED	Bool	130.1	false	False	True	True	True	False		ВО11.1 - Состояние
+	VO01101_HG_VALVE_OPENED	Bool	130.2	false	False	True	True	True	False		ВО11.1 - Клапан подачи жидкости открыт
+	VO01101_DRAIN_VALVE_OPENED	Bool	130.3	false	False	True	True	True	False		ВО11.1 - Клапан отвода паро-жидкости открыт
+	VO01201_TE_AIR	Real	132.0	0.0	False	True	True	True	False		ВО12.1 - Клапан подачи жидкости открыт
+	VO01201_TE_SIDE	Real	136.0	0.0	False	True	True	True	False		ВО12.1 - Клапан отвода паро-жидкости открыт
+	VO01201_STATE	UInt	140.0	0	False	True	True	True	False		ВО12.1 - Температура воздуха
+	VO01201_LIQ_VALVE_OPENED	Bool	142.0	false	False	True	True	True	False		ВО12.1 - Температура ребра
+	VO01201_SUC_VALVE_OPENED	Bool	142.1	false	False	True	True	True	False		ВО12.1 - Состояние
+	VO01201_HG_VALVE_OPENED	Bool	142.2	false	False	True	True	True	False		ВО12.1 - Клапан подачи жидкости открыт
+	VO01201_DRAIN_VALVE_OPENED	Bool	142.3	false	False	True	True	True	False		ВО12.1 - Клапан отвода паро-жидкости открыт
+	VO01301_TE_AIR	Real	144.0	0.0	False	True	True	True	False		ВО13.1 - Клапан подачи жидкости открыт
+	VO01301_TE_SIDE	Real	148.0	0.0	False	True	True	True	False		ВО13.1 - Клапан отвода паро-жидкости открыт
+	VO01301_STATE	UInt	152.0	0	False	True	True	True	False		ВО13.1 - Температура воздуха
+	VO01301_LIQ_VALVE_OPENED	Bool	154.0	false	False	True	True	True	False		ВО13.1 - Температура ребра
+	VO01301_SUC_VALVE_OPENED	Bool	154.1	false	False	True	True	True	False		ВО13.1 - Состояние
+	VO01301_HG_VALVE_OPENED	Bool	154.2	false	False	True	True	True	False		ВО13.1 - Клапан подачи жидкости открыт
+	VO01301_DRAIN_VALVE_OPENED	Bool	154.3	false	False	True	True	True	False		ВО13.1 - Клапан отвода паро-жидкости открыт
+	VO01401_TE_AIR	Real	156.0	0.0	False	True	True	True	False		ВО14.1 - Клапан подачи жидкости открыт
+	VO01401_TE_SIDE	Real	160.0	0.0	False	True	True	True	False		ВО14.1 - Клапан отвода паро-жидкости открыт
+	VO01401_STATE	UInt	164.0	0	False	True	True	True	False		ВО14.1 - Температура воздуха
+	VO01401_LIQ_VALVE_OPENED	Bool	166.0	false	False	True	True	True	False		ВО14.1 - Температура ребра
+	VO01401_SUC_VALVE_OPENED	Bool	166.1	false	False	True	True	True	False		ВО14.1 - Состояние
+	VO01401_HG_VALVE_OPENED	Bool	166.2	false	False	True	True	True	False		ВО14.1 - Клапан подачи жидкости открыт
+	VO01401_DRAIN_VALVE_OPENED	Bool	166.3	false	False	True	True	True	False		ВО14.1 - Клапан отвода паро-жидкости открыт
+	VO01501_TE_AIR	Real	168.0	0.0	False	True	True	True	False		ВО15.1 - Клапан подачи жидкости открыт
+	VO01501_TE_SIDE	Real	172.0	0.0	False	True	True	True	False		ВО15.1 - Клапан отвода паро-жидкости открыт
+	VO01501_STATE	UInt	176.0	0	False	True	True	True	False		ВО15.1 - Температура воздуха
+	VO01501_LIQ_VALVE_OPENED	Bool	178.0	false	False	True	True	True	False		ВО15.1 - Температура ребра
+	VO01501_SUC_VALVE_OPENED	Bool	178.1	false	False	True	True	True	False		ВО15.1 - Состояние
+	VO01501_HG_VALVE_OPENED	Bool	178.2	false	False	True	True	True	False		ВО15.1 - Клапан подачи жидкости открыт
+	VO01501_DRAIN_VALVE_OPENED	Bool	178.3	false	False	True	True	True	False		ВО15.1 - Клапан отвода паро-жидкости открыт
+	VO01601_TE_AIR	Real	180.0	0.0	False	True	True	True	False		ВО16.1 - Клапан подачи жидкости открыт
+	VO01601_TE_SIDE	Real	184.0	0.0	False	True	True	True	False		ВО16.1 - Клапан отвода паро-жидкости открыт
+	VO01601_STATE	UInt	188.0	0	False	True	True	True	False		ВО16.1 - Температура воздуха
+	VO01601_LIQ_VALVE_OPENED	Bool	190.0	false	False	True	True	True	False		ВО16.1 - Температура ребра
+	VO01601_SUC_VALVE_OPENED	Bool	190.1	false	False	True	True	True	False		ВО16.1 - Состояние
+	VO01601_HG_VALVE_OPENED	Bool	190.2	false	False	True	True	True	False		ВО16.1 - Клапан подачи жидкости открыт
+	VO01601_DRAIN_VALVE_OPENED	Bool	190.3	false	False	True	True	True	False		ВО16.1 - Клапан отвода паро-жидкости открыт
+	VO01701_TE_AIR	Real	192.0	0.0	False	True	True	True	False		ВО17.1 - Клапан подачи жидкости открыт
+	VO01701_TE_SIDE	Real	196.0	0.0	False	True	True	True	False		ВО17.1 - Клапан отвода паро-жидкости открыт
+	VO01701_STATE	UInt	200.0	0	False	True	True	True	False		ВО17.1 - Температура воздуха
+	VO01701_LIQ_VALVE_OPENED	Bool	202.0	false	False	True	True	True	False		ВО17.1 - Температура ребра
+	VO01701_SUC_VALVE_OPENED	Bool	202.1	false	False	True	True	True	False		ВО17.1 - Состояние
+	VO01701_HG_VALVE_OPENED	Bool	202.2	false	False	True	True	True	False		ВО17.1 - Клапан подачи жидкости открыт
+	VO01701_DRAIN_VALVE_OPENED	Bool	202.3	false	False	True	True	True	False		ВО17.1 - Клапан отвода паро-жидкости открыт
+	VO01801_TE_AIR	Real	204.0	0.0	False	True	True	True	False		ВО18.1 - Клапан подачи жидкости открыт
+	VO01801_TE_SIDE	Real	208.0	0.0	False	True	True	True	False		ВО18.1 - Клапан отвода паро-жидкости открыт
+	VO01801_STATE	UInt	212.0	0	False	True	True	True	False		ВО18.1 - Температура воздуха
+	VO01801_LIQ_VALVE_OPENED	Bool	214.0	false	False	True	True	True	False		ВО18.1 - Температура ребра
+	VO01801_SUC_VALVE_OPENED	Bool	214.1	false	False	True	True	True	False		ВО18.1 - Состояние
+	VO01801_HG_VALVE_OPENED	Bool	214.2	false	False	True	True	True	False		ВО18.1 - Клапан подачи жидкости открыт
+	VO01801_DRAIN_VALVE_OPENED	Bool	214.3	false	False	True	True	True	False		ВО18.1 - Клапан отвода паро-жидкости открыт
+	VO01901_TE_AIR	Real	216.0	0.0	False	True	True	True	False		ВО19.1 - Клапан подачи жидкости открыт
+	VO01901_TE_SIDE	Real	220.0	0.0	False	True	True	True	False		ВО19.1 - Клапан отвода паро-жидкости открыт
+	VO01901_STATE	UInt	224.0	0	False	True	True	True	False		ВО19.1 - Температура воздуха
+	VO01901_LIQ_VALVE_OPENED	Bool	226.0	false	False	True	True	True	False		ВО19.1 - Температура ребра
+	VO01901_SUC_VALVE_OPENED	Bool	226.1	false	False	True	True	True	False		ВО19.1 - Состояние
+	VO01901_HG_VALVE_OPENED	Bool	226.2	false	False	True	True	True	False		ВО19.1 - Клапан подачи жидкости открыт
+	VO01901_DRAIN_VALVE_OPENED	Bool	226.3	false	False	True	True	True	False		ВО19.1 - Клапан отвода паро-жидкости открыт
+	VO02001_TE_AIR	Real	228.0	0.0	False	True	True	True	False		ВО20.1 - Клапан подачи жидкости открыт
+	VO02001_TE_SIDE	Real	232.0	0.0	False	True	True	True	False		ВО20.1 - Клапан отвода паро-жидкости открыт
+	VO02001_STATE	UInt	236.0	0	False	True	True	True	False		ВО20.1 - Температура воздуха
+	VO02001_LIQ_VALVE_OPENED	Bool	238.0	false	False	True	True	True	False		ВО20.1 - Температура ребра
+	VO02001_SUC_VALVE_OPENED	Bool	238.1	false	False	True	True	True	False		ВО20.1 - Состояние
+	VO02001_HG_VALVE_OPENED	Bool	238.2	false	False	True	True	True	False		ВО20.1 - Клапан подачи жидкости открыт
+	VO02001_DRAIN_VALVE_OPENED	Bool	238.3	false	False	True	True	True	False		ВО20.1 - Клапан отвода паро-жидкости открыт
+	VO02101_TE_AIR	Real	240.0	0.0	False	True	True	True	False		ВО21.1 - Клапан подачи жидкости открыт
+	VO02101_TE_SIDE	Real	244.0	0.0	False	True	True	True	False		ВО21.1 - Клапан отвода паро-жидкости открыт
+	VO02101_STATE	UInt	248.0	0	False	True	True	True	False		ВО21.1 - Температура воздуха
+	VO02101_LIQ_VALVE_OPENED	Bool	250.0	false	False	True	True	True	False		ВО21.1 - Температура ребра
+	VO02101_SUC_VALVE_OPENED	Bool	250.1	false	False	True	True	True	False		ВО21.1 - Состояние
+	VO02101_HG_VALVE_OPENED	Bool	250.2	false	False	True	True	True	False		ВО21.1 - Клапан подачи жидкости открыт
+	VO02101_DRAIN_VALVE_OPENED	Bool	250.3	false	False	True	True	True	False		ВО21.1 - Клапан отвода паро-жидкости открыт
+	VO02201_TE_AIR	Real	252.0	0.0	False	True	True	True	False		ВО22.1 - Клапан подачи жидкости открыт
+	VO02201_TE_SIDE	Real	256.0	0.0	False	True	True	True	False		ВО22.1 - Клапан отвода паро-жидкости открыт
+	VO02201_STATE	UInt	260.0	0	False	True	True	True	False		ВО22.1 - Температура воздуха
+	VO02201_LIQ_VALVE_OPENED	Bool	262.0	false	False	True	True	True	False		ВО22.1 - Температура ребра
+	VO02201_SUC_VALVE_OPENED	Bool	262.1	false	False	True	True	True	False		ВО22.1 - Состояние
+	VO02201_HG_VALVE_OPENED	Bool	262.2	false	False	True	True	True	False		ВО22.1 - Клапан подачи жидкости открыт
+	VO02201_DRAIN_VALVE_OPENED	Bool	262.3	false	False	True	True	True	False		ВО22.1 - Клапан отвода паро-жидкости открыт
+	VO02301_TE_AIR	Real	264.0	0.0	False	True	True	True	False		ВО23.1 - Клапан подачи жидкости открыт
+	VO02301_TE_SIDE	Real	268.0	0.0	False	True	True	True	False		ВО23.1 - Клапан отвода паро-жидкости открыт
+	VO02301_STATE	UInt	272.0	0	False	True	True	True	False		ВО23.1 - Температура воздуха
+	VO02301_LIQ_VALVE_OPENED	Bool	274.0	false	False	True	True	True	False		ВО23.1 - Температура ребра
+	VO02301_SUC_VALVE_OPENED	Bool	274.1	false	False	True	True	True	False		ВО23.1 - Состояние
+	VO02301_HG_VALVE_OPENED	Bool	274.2	false	False	True	True	True	False		ВО23.1 - Клапан подачи жидкости открыт
+	VO02301_DRAIN_VALVE_OPENED	Bool	274.3	false	False	True	True	True	False		ВО23.1 - Клапан отвода паро-жидкости открыт
+	VO02401_TE_AIR	Real	276.0	0.0	False	True	True	True	False		ВО24.1 - Клапан подачи жидкости открыт
+	VO02401_TE_SIDE	Real	280.0	0.0	False	True	True	True	False		ВО24.1 - Клапан отвода паро-жидкости открыт
+	VO02401_STATE	UInt	284.0	0	False	True	True	True	False		ВО24.1 - Температура воздуха
+	VO02401_LIQ_VALVE_OPENED	Bool	286.0	false	False	True	True	True	False		ВО24.1 - Температура ребра
+	VO02401_SUC_VALVE_OPENED	Bool	286.1	false	False	True	True	True	False		ВО24.1 - Состояние
+	VO02401_HG_VALVE_OPENED	Bool	286.2	false	False	True	True	True	False		ВО24.1 - Клапан подачи жидкости открыт
+	VO02401_DRAIN_VALVE_OPENED	Bool	286.3	false	False	True	True	True	False		ВО24.1 - Клапан отвода паро-жидкости открыт
+	VO02501_TE_AIR	Real	288.0	0.0	False	True	True	True	False		ВО25.1 - Клапан подачи жидкости открыт
+	VO02501_TE_SIDE	Real	292.0	0.0	False	True	True	True	False		ВО25.1 - Клапан отвода паро-жидкости открыт
+	VO02501_STATE	UInt	296.0	0	False	True	True	True	False		ВО25.1 - Температура воздуха
+	VO02501_LIQ_VALVE_OPENED	Bool	298.0	false	False	True	True	True	False		ВО25.1 - Температура ребра
+	VO02501_SUC_VALVE_OPENED	Bool	298.1	false	False	True	True	True	False		ВО25.1 - Состояние
+	VO02501_HG_VALVE_OPENED	Bool	298.2	false	False	True	True	True	False		ВО25.1 - Клапан подачи жидкости открыт
+	VO02501_DRAIN_VALVE_OPENED	Bool	298.3	false	False	True	True	True	False		ВО25.1 - Клапан отвода паро-жидкости открыт
+	VO02601_TE_AIR	Real	300.0	0.0	False	True	True	True	False		ВО26.1 - Клапан подачи жидкости открыт
+	VO02601_TE_SIDE	Real	304.0	0.0	False	True	True	True	False		ВО26.1 - Клапан отвода паро-жидкости открыт
+	VO02601_STATE	UInt	308.0	0	False	True	True	True	False		ВО26.1 - Температура воздуха
+	VO02601_LIQ_VALVE_OPENED	Bool	310.0	false	False	True	True	True	False		ВО26.1 - Температура ребра
+	VO02601_SUC_VALVE_OPENED	Bool	310.1	false	False	True	True	True	False		ВО26.1 - Состояние
+	VO02601_HG_VALVE_OPENED	Bool	310.2	false	False	True	True	True	False		ВО26.1 - Клапан подачи жидкости открыт
+	VO02601_DRAIN_VALVE_OPENED	Bool	310.3	false	False	True	True	True	False		ВО26.1 - Клапан отвода паро-жидкости открыт
+	VO02701_TE_AIR	Real	312.0	0.0	False	True	True	True	False		ВО27.1 - Клапан подачи жидкости открыт
+	VO02701_TE_SIDE	Real	316.0	0.0	False	True	True	True	False		ВО27.1 - Клапан отвода паро-жидкости открыт
+	VO02701_STATE	UInt	320.0	0	False	True	True	True	False		ВО27.1 - Температура воздуха
+	VO02701_LIQ_VALVE_OPENED	Bool	322.0	false	False	True	True	True	False		ВО27.1 - Температура ребра
+	VO02701_SUC_VALVE_OPENED	Bool	322.1	false	False	True	True	True	False		ВО27.1 - Состояние
+	VO02701_HG_VALVE_OPENED	Bool	322.2	false	False	True	True	True	False		ВО27.1 - Клапан подачи жидкости открыт
+	VO02701_DRAIN_VALVE_OPENED	Bool	322.3	false	False	True	True	True	False		ВО27.1 - Клапан отвода паро-жидкости открыт
