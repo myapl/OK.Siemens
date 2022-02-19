@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using EntityFrameworkCore.Testing.Moq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Moq;
 using OK.Siemens.Models;
 using Xunit;
@@ -16,51 +19,59 @@ namespace OK.Siemens.DataProviders.Tests;
 public class DbContextFixture
 {
     public PgsqlDataRecordsRepository Repository { get; }
-    private IQueryable<DataRecord> _data;
+    private IQueryable<DataRecord> _dataRecords;
 
     public DbContextFixture()
     {
-        // test data
-        _data = new List<DataRecord>
-        {
-            new DataRecord{TagName = "Test", Value = 1.1f, TimeStamp = DateTime.Parse("01.01.1970 07:00:00")},
-            new DataRecord{TagName = "Test", Value = 2.2f, TimeStamp = DateTime.Parse("01.01.1970 07:01:00")},
-            new DataRecord{TagName = "Test", Value = 3.3f, TimeStamp = DateTime.Parse("01.01.1970 07:03:00")},
-            new DataRecord{TagName = "Test", Value = 4.4f, TimeStamp = DateTime.Parse("01.01.1970 07:04:00")}
-        }.AsQueryable();
+        var dbContextOptions = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
+        var mockDbContext = Create.MockedDbContextFor<AppDbContext>(dbContextOptions);
         
-        // mocking DbContext then
-        var mockDbContext = new Mock<AppDbContext>(new DbContextOptions<AppDbContext>());
-        mockDbContext.Setup(c => c.DataRecords).Returns(CreateMockDbSet);
-        mockDbContext.Setup(c => c.AddRangeAsync(It.IsAny<IEnumerable<DataRecord>>(), It.IsAny<CancellationToken>()))
-            .Returns((IEnumerable<DataRecord> x, CancellationToken _) => AddData(x, _));
+        #region DataRecords db context
+
+        // test data
+        _dataRecords = new List<DataRecord>
+        {
+            new DataRecord
+            {
+                TagName = new PlcTag
+                    {Tagname = "Tag1", DbAddress = new DbAddress {Bit = 0, Byte = 0}, DataType = DataType.Real, Description = "Desc1"},
+                Value = 1.1f, TimeStamp = DateTime.Parse("01.01.1970 07:00:00")
+            },
+            new DataRecord
+            {
+                TagName = new PlcTag
+                    {Tagname = "Tag2", DbAddress = new DbAddress {Bit = 2, Byte = 0}, DataType = DataType.UInt, Description = "Desc2"},
+                Value = 2.2f, TimeStamp = DateTime.Parse("01.01.1970 07:01:00")
+            },
+            new DataRecord
+            {
+                TagName = new PlcTag
+                    {Tagname = "Tag3", DbAddress = new DbAddress {Bit = 4, Byte = 0}, DataType = DataType.Real, Description = "Desc3"},
+                Value = 3.3f, TimeStamp = DateTime.Parse("01.01.1970 07:03:00")
+            },
+            new DataRecord
+            {
+                TagName = new PlcTag
+                    {Tagname = "Tag4", DbAddress = new DbAddress {Bit = 6, Byte = 0}, DataType = DataType.UInt, Description = "Desc4"},
+                Value = 4.4f, TimeStamp = DateTime.Parse("01.01.1970 07:04:00")
+            }
+        }.AsQueryable().AsNoTracking();
+        
+        mockDbContext.Set<DataRecord>().AddRange(_dataRecords);
+
+        #endregion
+
+        mockDbContext.SaveChanges();
+        mockDbContext.ChangeTracker.Clear();
 
         // finally mocking IDbContextFactory
         var mockDbFactory = new Mock<IDbContextFactory<AppDbContext>>();
         mockDbFactory.Setup(f => f.CreateDbContextAsync(It.IsAny<CancellationToken>()))
-            .ReturnsAsync(mockDbContext.Object);
+            .ReturnsAsync(mockDbContext);
         
         Repository = new PgsqlDataRecordsRepository(mockDbFactory.Object);
     }
-
-    private Task AddData(IEnumerable<DataRecord> x, CancellationToken _)
-    {
-        var list = _data.ToList();
-        list.AddRange(x);
-        _data = list.AsQueryable();
-        return Task.FromResult(true);
-    }
-
-    private DbSet<DataRecord> CreateMockDbSet()
-    {
-        // mocking DbSet first 
-        var mockDbSet = new Mock<DbSet<DataRecord>>();
-        mockDbSet.As<IQueryable<DataRecord>>().Setup(m => m.Provider).Returns(_data.Provider);
-        mockDbSet.As<IQueryable<DataRecord>>().Setup(m => m.Expression).Returns(_data.Expression);
-        mockDbSet.As<IQueryable<DataRecord>>().Setup(m => m.ElementType).Returns(_data.ElementType);
-        mockDbSet.As<IQueryable<DataRecord>>().Setup(m => m.GetEnumerator()).Returns(_data.GetEnumerator());
-        return mockDbSet.Object;
-    }
+    
 }
 
 #endregion
@@ -91,16 +102,62 @@ public class PgsqlDataRecordsRepositoryTests: IClassFixture<DbContextFixture>
     [Fact]
     public async Task AddRecords_ShouldPresentInRepository()
     {
+        
         var data = new List<DataRecord>
         {
-            new DataRecord{TagName = "Test", Value = 6.6f, TimeStamp = DateTime.Parse("01.01.1970 07:05:00")},
-            new DataRecord{TagName = "Test", Value = 7.7f, TimeStamp = DateTime.Parse("01.01.1970 07:06:00")}
-        };
+            new DataRecord{TagName = new PlcTag{Id = 1}, Value = 6.6f, TimeStamp = DateTime.Parse("01.01.1970 07:05:00")},
+            new DataRecord{TagName = new PlcTag{Id = 2}, Value = 7.7f, TimeStamp = DateTime.Parse("01.01.1970 07:06:00")}
+        }.AsEnumerable();
         var countPrev = await _fixture.Repository.GetRecordsBetweenTime(DateTime.Parse("01.01.1970 07:00:00"), DateTime.Now);
-        
+        var countPrevCount = countPrev.ToList().Count();
         await _fixture.Repository.AddDataRecordsAsync(data);
+        
         var countCurrent = await _fixture.Repository.GetRecordsBetweenTime(DateTime.Parse("01.01.1970 07:00:00"), DateTime.Now);
+        var countCurrentCount = countCurrent.ToList().Count();
 
-        Assert.Equal(2, countCurrent.Count() - countPrev.Count());
+        Assert.Equal(2, countCurrentCount - countPrevCount);
+    }
+
+    [Fact]
+    public async Task AddTagsAsync_ShouldPresentInRepository()
+    {
+        var data = new List<PlcTag>
+        {
+            new PlcTag
+            {
+                DataType = DataType.Bool, 
+                DbAddress = new DbAddress {Bit = 8, Byte = 0}, 
+                Description = "Desc5",
+                Tagname = "Tag5"
+            },
+            new PlcTag
+            {
+                DataType = DataType.Real, 
+                DbAddress = new DbAddress {Bit = 10, Byte = 0}, 
+                Description = "Desc6",
+                Tagname = "Tag6"
+            }
+        };
+        var expected = await _fixture.Repository.GetTagsAsync();
+        // expected.ToList().AddRange(data);
+
+        await _fixture.Repository.AddTagsAsync(data);
+        
+        Assert.Collection(await _fixture.Repository.GetTagsAsync(), 
+            item => ComparePlcTag(item, expected.ToArray()[0]),
+            item => ComparePlcTag(item, expected.ToArray()[1]),
+            item => ComparePlcTag(item, expected.ToArray()[2]),
+            item => ComparePlcTag(item, expected.ToArray()[3]),
+            item => ComparePlcTag(item, expected.ToArray()[4]),
+            item => ComparePlcTag(item, expected.ToArray()[5]));
+    }
+    
+    private void ComparePlcTag(PlcTag item, PlcTag expected)
+    {
+        Assert.Equal(expected.Tagname, item.Tagname);
+        Assert.Equal(expected.Description, item.Description);
+        Assert.Equal(expected.DataType, item.DataType);
+        Assert.Equal(expected.DbAddress.Bit, item.DbAddress.Bit);
+        Assert.Equal(expected.DbAddress.Byte, item.DbAddress.Byte);
     }
 }
