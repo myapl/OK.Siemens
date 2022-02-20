@@ -32,14 +32,14 @@ public class PlcDbParser : IPlcDbParser
                     switch (fieldNumber)
                     {
                         case 1:
-                            tag.Tagname = field;
+                            tag.TagName = field;
                             break;
                         case 2:
                             Enum.TryParse<DataType>(field, out var dataType);
                             tag.DataType = dataType;
                             break;
                         case 3:
-                            tag.DbAddress = SplitDbAddress(field, tag.Tagname);
+                            tag.DbAddress = SplitDbAddress(field, tag.TagName);
                             break;
                         case 11:
                             tag.Description = field;
