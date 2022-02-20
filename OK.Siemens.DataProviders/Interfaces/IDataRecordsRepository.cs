@@ -7,10 +7,10 @@ public interface IDataRecordsRepository
     /// <summary>
     /// Select data records between after and before
     /// </summary>
-    /// <param name="before"></param>
     /// <param name="after"></param>
+    /// <param name="before"></param>
     /// <returns></returns>
-    Task<IQueryable<DataRecord>> GetRecordsBetweenTime(DateTime after, DateTime before);
+    Task<IQueryable<DataRecord>> GetRecordsBetweenTime(DateTime after, DateTime before); // IEnumerable<PlcTag> tags
 
     /// <summary>
     /// Add collection of records to repository
@@ -29,4 +29,24 @@ public interface IDataRecordsRepository
     /// </summary>
     /// <returns></returns>
     Task<IQueryable<PlcTag>> GetTagsAsync();
+
+    /// <summary>
+    /// Add new category
+    /// </summary>
+    /// <param name="category"></param>
+    /// <returns>True if operation success</returns>
+    Task<(bool error, string message)> AddCategoryAsync(Category category);
+    
+    /// <summary>
+    /// Edit category
+    /// </summary>
+    /// <param name="category"></param>
+    /// <returns>True if operation success</returns>
+    Task<bool> EditCategoryAsync(Category category);
+
+    /// <summary>
+    /// Return list of categories
+    /// </summary>
+    /// <returns></returns>
+    Task<IQueryable<Category>?> GetCategoriesAsync();
 }

@@ -12,16 +12,18 @@ public class PgsqlDataRecordsRepository : IDataRecordsRepository
     {
         _dbContextFactory = dbContextFactory;
     }
+
     /// <summary>
     /// Select data records between after and before
     /// </summary>
-    /// <param name="before"></param>
     /// <param name="after"></param>
+    /// <param name="before"></param>
     /// <returns></returns>
     public async Task<IQueryable<DataRecord>> GetRecordsBetweenTime(DateTime after, DateTime before)
     {
         var dbContext = await _dbContextFactory.CreateDbContextAsync();
-        return dbContext.DataRecords.AsNoTracking().Where(d => d.TimeStamp >= after && d.TimeStamp <= before).AsQueryable();
+        return dbContext.DataRecords.AsNoTracking()
+            .Where(d => d.TimeStamp >= after && d.TimeStamp <= before).AsQueryable();
     }
 
     /// <summary>
@@ -49,7 +51,7 @@ public class PgsqlDataRecordsRepository : IDataRecordsRepository
         var dbContext = await _dbContextFactory.CreateDbContextAsync();
         foreach (var tag in tags)
         {
-            var tagPresent = await dbContext.Tags.FirstOrDefaultAsync(t => t.Tagname == tag.Tagname);
+            var tagPresent = await dbContext.Tags.FirstOrDefaultAsync(t => t.TagName == tag.TagName);
             if (tagPresent == null)
             {
                 await dbContext.AddAsync(tag);
@@ -66,5 +68,43 @@ public class PgsqlDataRecordsRepository : IDataRecordsRepository
     {
         var dbContext = await _dbContextFactory.CreateDbContextAsync();
         return dbContext.Tags.AsNoTracking().AsQueryable();
+    }
+
+    /// <summary>
+    /// Add new category
+    /// </summary>
+    /// <param name="category"></param>
+    /// <returns>True if operation success</returns>
+    public async Task<(bool error, string message)> AddCategoryAsync(Category category)
+    {
+        var dbContext = await _dbContextFactory.CreateDbContextAsync();
+        if (string.IsNullOrEmpty(category.Name))
+            return (true, "category name is empty");
+        var present = await dbContext.Categories.FirstOrDefaultAsync(c => c.Name == category.Name);
+        if (present != null)
+            return (true, "category already exist");
+        dbContext.Categories.Add(category);
+        await dbContext.SaveChangesAsync();
+        return (false, "Ok");
+    }
+
+    /// <summary>
+    /// Edit category
+    /// </summary>
+    /// <param name="category"></param>
+    /// <returns>True if operation success</returns>
+    public Task<bool> EditCategoryAsync(Category category)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <summary>
+    /// Return list of categories
+    /// </summary>
+    /// <returns></returns>
+    public async Task<IQueryable<Category>?> GetCategoriesAsync()
+    {
+        var dbContext = await _dbContextFactory.CreateDbContextAsync();
+        return dbContext.Categories.AsNoTracking().AsQueryable();
     }
 }

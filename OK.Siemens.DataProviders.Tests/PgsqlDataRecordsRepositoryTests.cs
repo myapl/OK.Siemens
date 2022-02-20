@@ -19,7 +19,6 @@ namespace OK.Siemens.DataProviders.Tests;
 public class DbContextFixture
 {
     public PgsqlDataRecordsRepository Repository { get; }
-    private IQueryable<DataRecord> _dataRecords;
 
     public DbContextFixture()
     {
@@ -29,35 +28,37 @@ public class DbContextFixture
         #region DataRecords db context
 
         // test data
-        _dataRecords = new List<DataRecord>
+        var dataRecords = new List<DataRecord>
         {
             new DataRecord
             {
                 TagName = new PlcTag
-                    {Tagname = "Tag1", DbAddress = new DbAddress {Bit = 0, Byte = 0}, DataType = DataType.Real, Description = "Desc1"},
+                    {TagName = "Tag1", DbAddress = new DbAddress {Bit = 0, Byte = 0}, DataType = DataType.Real, Description = "Desc1"},
                 Value = 1.1f, TimeStamp = DateTime.Parse("01.01.1970 07:00:00")
             },
             new DataRecord
             {
                 TagName = new PlcTag
-                    {Tagname = "Tag2", DbAddress = new DbAddress {Bit = 2, Byte = 0}, DataType = DataType.UInt, Description = "Desc2"},
+                    {TagName = "Tag2", DbAddress = new DbAddress {Bit = 2, Byte = 0}, DataType = DataType.UInt, Description = "Desc2"},
                 Value = 2.2f, TimeStamp = DateTime.Parse("01.01.1970 07:01:00")
             },
             new DataRecord
             {
                 TagName = new PlcTag
-                    {Tagname = "Tag3", DbAddress = new DbAddress {Bit = 4, Byte = 0}, DataType = DataType.Real, Description = "Desc3"},
+                    {TagName = "Tag3", DbAddress = new DbAddress {Bit = 4, Byte = 0}, DataType = DataType.Real, Description = "Desc3"},
                 Value = 3.3f, TimeStamp = DateTime.Parse("01.01.1970 07:03:00")
             },
             new DataRecord
             {
                 TagName = new PlcTag
-                    {Tagname = "Tag4", DbAddress = new DbAddress {Bit = 6, Byte = 0}, DataType = DataType.UInt, Description = "Desc4"},
+                    {TagName = "Tag4", DbAddress = new DbAddress {Bit = 6, Byte = 0}, DataType = DataType.UInt, Description = "Desc4"},
                 Value = 4.4f, TimeStamp = DateTime.Parse("01.01.1970 07:04:00")
             }
         }.AsQueryable().AsNoTracking();
+
+        mockDbContext.Set<Category>().Add(new Category {Name = "Existing category"});
         
-        mockDbContext.Set<DataRecord>().AddRange(_dataRecords);
+        mockDbContext.Set<DataRecord>().AddRange(dataRecords);
 
         #endregion
 
@@ -91,6 +92,12 @@ public class PgsqlDataRecordsRepositoryTests: IClassFixture<DbContextFixture>
     [Fact]
     public async Task GetRecordsBetweenTime_ShouldReturnExactRows()
     {
+        var tags = new List<PlcTag>
+        {
+            new PlcTag{Id = 1},
+            new PlcTag{Id = 2},
+            new PlcTag{Id = 3}
+        };
         var receivedData = await _fixture.Repository
             .GetRecordsBetweenTime(DateTime.Parse("01.01.1970 07:00:00"), DateTime.Parse("01.01.1970 07:02:00"));
         Assert.Equal(2, receivedData.Count());
@@ -102,7 +109,13 @@ public class PgsqlDataRecordsRepositoryTests: IClassFixture<DbContextFixture>
     [Fact]
     public async Task AddRecords_ShouldPresentInRepository()
     {
-        
+        var tags = new List<PlcTag>
+        {
+            new PlcTag{Id = 1},
+            new PlcTag{Id = 2},
+            new PlcTag{Id = 3},
+            new PlcTag{Id = 4}
+        };
         var data = new List<DataRecord>
         {
             new DataRecord{TagName = new PlcTag{Id = 1}, Value = 6.6f, TimeStamp = DateTime.Parse("01.01.1970 07:05:00")},
@@ -128,14 +141,14 @@ public class PgsqlDataRecordsRepositoryTests: IClassFixture<DbContextFixture>
                 DataType = DataType.Bool, 
                 DbAddress = new DbAddress {Bit = 8, Byte = 0}, 
                 Description = "Desc5",
-                Tagname = "Tag5"
+                TagName = "Tag5"
             },
             new PlcTag
             {
                 DataType = DataType.Real, 
                 DbAddress = new DbAddress {Bit = 10, Byte = 0}, 
                 Description = "Desc6",
-                Tagname = "Tag6"
+                TagName = "Tag6"
             }
         };
         var expected = await _fixture.Repository.GetTagsAsync();
@@ -151,10 +164,61 @@ public class PgsqlDataRecordsRepositoryTests: IClassFixture<DbContextFixture>
             item => ComparePlcTag(item, expected.ToArray()[4]),
             item => ComparePlcTag(item, expected.ToArray()[5]));
     }
+
+    /// <summary>
+    /// Add valid record to categories
+    /// </summary>
+    [Fact]
+    public async Task AddValidCategory_ShouldReturnTrue()
+    {
+        var category = new Category {Name = "This category not exist"};
+        var (error, message) = await _fixture.Repository.AddCategoryAsync(category);
+
+        var categories = await _fixture.Repository.GetCategoriesAsync();
+        
+        Assert.False(error);
+        Assert.Equal("Ok", message);
+        Assert.NotNull(categories);
+        if (categories != null) 
+            Assert.Contains(categories.AsEnumerable<Category>(), c => c.Name == category.Name);
+    }
+
+    /// <summary>
+    /// Add invalid category should return false
+    /// </summary>
+    [Fact]
+    public async Task AddInvalidCategory_ShouldReturnFalse()
+    {
+        var category = new Category();
+        var (error, message) = await _fixture.Repository.AddCategoryAsync(category);
+        
+        var categories = await _fixture.Repository.GetCategoriesAsync();
+
+        Assert.True(error);
+        Assert.Equal("category name is empty", message);
+        if (categories != null) 
+            Assert.DoesNotContain(categories.AsEnumerable<Category>(), c => c.Name == category.Name);
+    }
+    
+    /// <summary>
+    /// Add existing category should return false
+    /// </summary>
+    [Fact]
+    public async Task AddExistingCategory_ShouldReturnFalse()
+    {
+        var category = new Category{Name = "Existing category"};
+        var (error, message) = await _fixture.Repository.AddCategoryAsync(category);
+        
+        var categories = await _fixture.Repository.GetCategoriesAsync();
+
+        Assert.True(error);
+        Assert.Equal("category already exist", message);
+    }
+    
     
     private void ComparePlcTag(PlcTag item, PlcTag expected)
     {
-        Assert.Equal(expected.Tagname, item.Tagname);
+        Assert.Equal(expected.TagName, item.TagName);
         Assert.Equal(expected.Description, item.Description);
         Assert.Equal(expected.DataType, item.DataType);
         Assert.Equal(expected.DbAddress.Bit, item.DbAddress.Bit);
