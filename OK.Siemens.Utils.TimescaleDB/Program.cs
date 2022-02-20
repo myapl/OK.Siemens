@@ -8,7 +8,7 @@ IConfiguration config = new ConfigurationBuilder()
 TimescaleHelper ts = new TimescaleHelper();
 
 ts.CheckDatabaseConnection(config["PgsqlConnectionString"]!);
-ts.ChangeToHypertable(config["PgsqlConnectionString"]!, "DataRecords", "Id", 100_000);
+ts.ChangeToHypertable(config["PgsqlConnectionString"]!, "DataRecords", "TimeStamp", 1);
 
 public class TimescaleHelper
 {
@@ -62,8 +62,8 @@ public class TimescaleHelper
     /// <param name="connectionString"></param>
     /// <param name="tableName"></param>
     /// <param name="columnName"></param>
-    /// <param name="chunkTimeInterval"></param>
-    public void ChangeToHypertable(string connectionString, string tableName, string columnName, int chunkTimeInterval)
+    /// <param name="chunkHoursInterval"></param>
+    public void ChangeToHypertable(string connectionString, string tableName, string columnName, int chunkHoursInterval)
     {
         using (var conn = getConnection(connectionString))
         {
@@ -74,7 +74,7 @@ public class TimescaleHelper
                 Console.Out.WriteLine($"Extension timescaledb created!");
             }
             
-            sql = $"SELECT create_hypertable('\"{tableName}\"', '{columnName}', chunk_time_interval => {chunkTimeInterval});";
+            sql = $"SELECT create_hypertable('\"{tableName}\"', '{columnName}', chunk_time_interval => INTERVAL '{chunkHoursInterval} hours');";
             using (var cmd = new NpgsqlCommand(sql, conn))
             {
                 cmd.ExecuteNonQuery();
