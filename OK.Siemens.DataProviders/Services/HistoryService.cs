@@ -3,7 +3,7 @@ using OK.Siemens.Models;
 
 namespace OK.Siemens.DataProviders.Services;
 
-public class HistoryService
+public class HistoryService : IHistoryService
 {
     private readonly IDataRecordsRepository _repository;
 
@@ -21,4 +21,13 @@ public class HistoryService
     {
         return await _repository.AddCategoryAsync(new Category{Name = categoryName});
     }
+
+    /// <summary>
+    /// Return list of all plc tags
+    /// </summary>
+    /// <returns></returns>
+    public async Task<IEnumerable<PlcTag>> GetTagsAsync()
+    {
+        return await _repository.GetTagsAsync();
+    } 
 }
