@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net6.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\OK.Siemens.DataProviders\OK.Siemens.DataProviders.csproj" />
+      <ProjectReference Include="..\OK.Siemens.Models\OK.Siemens.Models.csproj" />
+      <ProjectReference Include="..\OK.Siemens.WPF.CustomControls\OK.Siemens.WPF.CustomControls.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0-preview1" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.2" />
+      <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.2-mauipre.1.22102.15" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.2-mauipre.1.22102.15" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.2-mauipre.1.22102.15" />
+    </ItemGroup>
+
+</Project>
