@@ -23,11 +23,20 @@ public class HistoryService : IHistoryService
     }
 
     /// <summary>
+    /// Get tags categories
+    /// </summary>
+    /// <returns></returns>
+    public async Task<(bool error, IQueryable<Category>?)> GetCategoriesAsync()
+    {
+        return await _repository.GetCategoriesAsync();
+    }
+
+    /// <summary>
     /// Return list of all plc tags
     /// </summary>
     /// <returns></returns>
     public async Task<IEnumerable<PlcTag>> GetTagsAsync()
     {
         return await _repository.GetTagsAsync();
-    } 
+    }
 }

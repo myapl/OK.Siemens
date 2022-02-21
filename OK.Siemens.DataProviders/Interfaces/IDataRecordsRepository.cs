@@ -48,5 +48,7 @@ public interface IDataRecordsRepository
     /// Return list of categories
     /// </summary>
     /// <returns></returns>
-    Task<IQueryable<Category>?> GetCategoriesAsync();
+    Task<(bool error, IQueryable<Category>? categories)> GetCategoriesAsync();
+
+    Task<bool> UpdateTag(PlcTag tag);
 }

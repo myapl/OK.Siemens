@@ -12,6 +12,12 @@ public interface IHistoryService
     Task<(bool error, string message)> AddCategoryAsync(string categoryName);
 
     /// <summary>
+    /// Get tags categories
+    /// </summary>
+    /// <returns></returns>
+    Task<(bool error, IQueryable<Category>?)> GetCategoriesAsync();
+
+    /// <summary>
     /// Return list of all plc tags
     /// </summary>
     /// <returns></returns>

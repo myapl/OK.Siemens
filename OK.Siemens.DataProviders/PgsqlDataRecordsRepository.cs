@@ -80,12 +80,19 @@ public class PgsqlDataRecordsRepository : IDataRecordsRepository
         var dbContext = await _dbContextFactory.CreateDbContextAsync();
         if (string.IsNullOrEmpty(category.Name))
             return (true, "category name is empty");
-        var present = await dbContext.Categories.FirstOrDefaultAsync(c => c.Name == category.Name);
-        if (present != null)
-            return (true, "category already exist");
-        dbContext.Categories.Add(category);
-        await dbContext.SaveChangesAsync();
-        return (false, "Ok");
+        try
+        {
+            var present = await dbContext.Categories.FirstOrDefaultAsync(c => c.Name == category.Name);
+            if (present != null)
+                return (true, "category already exist");
+            dbContext.Categories.Add(category);
+            await dbContext.SaveChangesAsync();
+            return (false, "Ok");
+        }
+        catch (Exception e)
+        {
+            return (true, "Having troubles with DB");
+        }
     }
 
     /// <summary>
@@ -102,9 +109,35 @@ public class PgsqlDataRecordsRepository : IDataRecordsRepository
     /// Return list of categories
     /// </summary>
     /// <returns></returns>
-    public async Task<IQueryable<Category>?> GetCategoriesAsync()
+    public async Task<(bool error, IQueryable<Category>? categories)> GetCategoriesAsync()
     {
-        var dbContext = await _dbContextFactory.CreateDbContextAsync();
-        return dbContext.Categories.AsNoTracking().AsQueryable();
+        try
+        {
+            var dbContext = await _dbContextFactory.CreateDbContextAsync();
+            return (false, dbContext.Categories.AsNoTracking().AsQueryable());
+        }
+        catch (Exception e)
+        {
+            return (true, null);
+        }
+    }
+
+    public async Task<bool> UpdateTag(PlcTag tag)
+    {
+        try
+        {
+            var dbContext = await _dbContextFactory.CreateDbContextAsync();
+            // var dbTag = await dbContext.Tags.FirstOrDefaultAsync(t => t.Id == tag.Id);
+            // if (dbTag == null)
+            //     return false;
+            // dbTag = tag;
+            dbContext.Tags.Update(tag);
+            await dbContext.SaveChangesAsync();
+            return (false);
+        }
+        catch (Exception e)
+        {
+            return (true);
+        }
     }
 }

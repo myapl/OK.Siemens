@@ -17,6 +17,13 @@ public class PlcTag
     
     public List<DataRecord> DataRecords { get; set; } = new();
 
+    /// <summary>
+    /// Convert Tag to Data record with a given DateTime
+    /// </summary>
+    /// <param name="dateTime"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    /// <exception cref="NotImplementedException"></exception>
     public DataRecord ToDataRecord(DateTime dateTime)
     {
         if (dateTime.Kind != DateTimeKind.Utc)

@@ -172,11 +172,11 @@ public class PgsqlDataRecordsRepositoryTests: IClassFixture<DbContextFixture>
     public async Task AddValidCategory_ShouldReturnTrue()
     {
         var category = new Category {Name = "This category not exist"};
-        var (error, message) = await _fixture.Repository.AddCategoryAsync(category);
+        var (addError, message) = await _fixture.Repository.AddCategoryAsync(category);
 
-        var categories = await _fixture.Repository.GetCategoriesAsync();
+        var(getError, categories) = await _fixture.Repository.GetCategoriesAsync();
         
-        Assert.False(error);
+        Assert.False(addError);
         Assert.Equal("Ok", message);
         Assert.NotNull(categories);
         if (categories != null) 
@@ -190,11 +190,11 @@ public class PgsqlDataRecordsRepositoryTests: IClassFixture<DbContextFixture>
     public async Task AddInvalidCategory_ShouldReturnFalse()
     {
         var category = new Category();
-        var (error, message) = await _fixture.Repository.AddCategoryAsync(category);
+        var (addError, message) = await _fixture.Repository.AddCategoryAsync(category);
         
-        var categories = await _fixture.Repository.GetCategoriesAsync();
+        var (getError, categories) = await _fixture.Repository.GetCategoriesAsync();
 
-        Assert.True(error);
+        Assert.True(addError);
         Assert.Equal("category name is empty", message);
         if (categories != null) 
             Assert.DoesNotContain(categories.AsEnumerable<Category>(), c => c.Name == category.Name);
@@ -213,6 +213,24 @@ public class PgsqlDataRecordsRepositoryTests: IClassFixture<DbContextFixture>
 
         Assert.True(error);
         Assert.Equal("category already exist", message);
+    }
+
+    [Fact]
+    public async Task UpdateTag_ShouldUpdateTag()
+    {
+        var updatingTag = new PlcTag
+        {
+            Id = 1,
+            TagName = "Updated 1", DbAddress = new DbAddress {Bit = 0, Byte = 0}, DataType = DataType.Real,
+            Description = "Updated 2"
+        };
+
+        var error = await _fixture.Repository.UpdateTag(updatingTag);
+        var tags = (await _fixture.Repository.GetTagsAsync()).ToArray();
+        
+        Assert.False(error);
+        Assert.Equal(updatingTag.TagName, tags[0].TagName);
+        Assert.Equal(updatingTag.Description, tags[0].Description);
     }
     
     

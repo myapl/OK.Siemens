@@ -5,65 +5,110 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OK.Siemens.WPF.TrendClient"
         xmlns:vm = "clr-namespace:OK.Siemens.WPF.TrendClient.ViewModels"
-        xmlns:custom="clr-namespace:OK.Siemens.WPF.CustomControls;assembly=OK.Siemens.WPF.CustomControls"
+        xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:models="clr-namespace:OK.Siemens.Models;assembly=OK.Siemens.Models"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance {x:Type vm:MainWindowViewModel}, IsDesignTimeCreatable=True}"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
         Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Window.Resources>
     <Grid>
-        <!-- Modal window add category -->
-        <custom:Modal x:Name="AddCategoryModalWindow" Panel.ZIndex="10" 
-                      IsOpen="{Binding IsAddCategoryModalVisible}">
-            <custom:Modal.Background>
-                <SolidColorBrush Color="Black" Opacity="0.75" />
-            </custom:Modal.Background>
-            <!-- Modal window context -->
-            <Border Width="300" 
-                    Height="200" 
-                    Background="White"
-                    CornerRadius="5">
-                <DockPanel HorizontalAlignment="Center" 
-                           VerticalAlignment="Center">
-                    <!-- Add -->
-                    <Button Height="40" 
-                            Padding="10" 
-                            Margin="0 0 5 0"
-                            Command="{Binding CancelAddCategoryCommand}">
-                        Add
+        <!-- Add category dialog -->
+        <md:DialogHost DialogTheme="Inherit" 
+                       IsOpen="{Binding IsDialogAddCategoryVisible}">
+            <md:DialogHost.DialogContent>
+                <StackPanel>
+                    <!-- Content -->
+                    <StackPanel Margin="16" 
+                                Visibility="{Binding Path=!IsCategoryLoading,
+                                Converter={StaticResource BooleanToVisibilityConverter}}"
+                                >
+                        <!-- Label -->
+                        <TextBlock Text="Add new category"/>
+                        <!-- Input field -->
+                        <TextBox Margin="0 10 0 0"
+                                 Text="{Binding CategoryName}"></TextBox>
+                        <!-- Buttons -->
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="0 10 0 0">
+                            <!-- Add Category -->
+                            <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                    Command="{Binding AddCategoryCommand}"
+                                    Content="ADD" />
+                            <!-- Cancell -->
+                            <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                    Command="{Binding CancelAddCategoryCommand}"
+                                    Content="CANCEL" />
+                        </StackPanel>
+                    </StackPanel>
+                    <!-- Loading indicator -->
+                    <StackPanel Visibility="{Binding IsCategoryLoading, 
+                                Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <TextBlock Text="Loading ..." />
+                        <ProgressBar IsIndeterminate="True" />
+                    </StackPanel>
+                </StackPanel>
+            </md:DialogHost.DialogContent>
+            <!-- Main window content -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="32"></RowDefinition>
+                </Grid.RowDefinitions>
+                <!-- Start getting data -->
+                <Button Margin="10 10 0 0 ">Start</Button>
+                <!-- Stop getting data -->
+                <Button Grid.Row="1" Grid.Column="0" Margin="10 10  0 0 ">Stop</Button>
+                <DockPanel Grid.Row="2" Grid.Column="0" VerticalAlignment="Stretch">
+                    <!-- Add Category-->
+                    <Button DockPanel.Dock="Top"
+                            Margin="10 10 0 0"
+                            Command="{Binding OpenAddCategoryWindowCommand}">
+                        Add Category
                     </Button>
-                    <!-- Cancel-->
-                    <Button Height="40" 
-                            Padding="10"
-                            Command="{Binding CancelAddCategoryCommand}">
-                        Cancel
-                    </Button>
+                    <!-- Categories tree view -->
+                    <TreeView Height="Auto" Margin="10 10 0 5" ItemsSource="{Binding Categories}">
+                        <TreeView.ItemTemplate>
+                            <HierarchicalDataTemplate ItemsSource="{Binding Tags}">
+                                <TextBlock Text="{Binding Name}" />
+                                <HierarchicalDataTemplate.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type models:PlcTag}">
+                                        <TextBlock Text="{Binding TagName}" />
+                                    </DataTemplate>
+                                </HierarchicalDataTemplate.ItemTemplate>
+                            </HierarchicalDataTemplate>
+                        </TreeView.ItemTemplate>
+                    </TreeView>
                 </DockPanel>
-            </Border>
-        </custom:Modal>
-        
-        <!-- Main window content -->
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="50"></RowDefinition>
-                <RowDefinition Height="50"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-            </Grid.RowDefinitions>
-            
-            <Button Margin="10 10 0 0 ">Start</Button>
-            <Button Grid.Row="1" Grid.Column="0" Margin="10 10 0 0 ">Stop</Button>
-            <DockPanel Grid.Row="2" Grid.Column="0" VerticalAlignment="Stretch">
-                <!-- Add Category-->
-                <Button DockPanel.Dock="Top" Height="40" 
-                        Margin="10 10 0 0"
-                        Command="{Binding OpenAddCategoryWindowCommand}">
-                    Add Category
-                </Button>
-                <TreeView Height="Auto" Margin="10 10 0 5"></TreeView>
-            </DockPanel>
-        </Grid>
-        
+                <!-- test: List with categories -->
+                <ListView Grid.Column="1" Grid.Row="0"
+                          Grid.RowSpan="3"
+                          Margin="10 10 0 0"
+                          ItemsSource="{Binding Categories}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}"></TextBlock>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <StatusBar Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2">
+                    <TextBlock Text="{Binding CategoryName}"></TextBlock>
+                </StatusBar>
+            </Grid>
+        </md:DialogHost>
     </Grid>
 </Window>
