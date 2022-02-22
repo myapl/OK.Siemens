@@ -30,11 +30,14 @@ public interface IHistoryService
     /// <param name="tags"></param>
     /// <returns>true in error occured</returns>
     Task<bool> AddTagsRangeAsync(IEnumerable<PlcTag> tags);
-    
+
     /// <summary>
     /// Add data records to repository
     /// </summary>
     /// <param name="dataRecords"></param>
     /// <returns></returns>
     Task AddDataRecordsAsync(IEnumerable<DataRecord> dataRecords);
+
+    Task<IEnumerable<DataRecord>> GetDataAsync(PlcTag tag, DateTime start, DateTime end);
+    
 }

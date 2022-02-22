@@ -36,7 +36,7 @@ public class MainWindowViewModel: ObservableObject
         StopReciveDataCommand = new RelayCommand(StopReceiveData);
     }
 
-    private async void SomeWork(object sender, DoWorkEventArgs e)
+    private async void SomeWork(object? sender, DoWorkEventArgs e)
     {
         var tags = new List<PlcTag>
         {

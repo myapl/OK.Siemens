@@ -44,7 +44,15 @@ namespace OK.Siemens.WPF.TrendClient
         protected void AppStartup(object sender, StartupEventArgs e)
         {
             var mainWindowViewModel = _serviceProvider.GetService<MainWindowViewModel>();
-            mainWindowViewModel?.GetCategoriesCommand.Execute(null);
+            if (mainWindowViewModel != null)
+            {
+                mainWindowViewModel.GetCategoriesCommand.Execute(null);
+                DateTime.TryParse("2022-02-22 14:43:50", out var start);
+                mainWindowViewModel.DateTimeStart = start;
+                DateTime.TryParse("2022-02-22 15:00:08", out var end);
+                mainWindowViewModel.DateTimeEnd = end;
+            }
+
             var mainWindow = _serviceProvider.GetService<MainWindow>();
             mainWindow?.Show();
         }

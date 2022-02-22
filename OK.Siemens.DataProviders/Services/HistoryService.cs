@@ -76,6 +76,12 @@ public class HistoryService : IHistoryService
         await _repository.AddDataRecordsAsync(dataRecords);
     }
 
+    public async Task<IEnumerable<DataRecord>> GetDataAsync(PlcTag tag, DateTime start, DateTime end)
+    {
+        var records = await _repository.GetRecordsBetweenTime(start, end);
+        return records.Where(r => r.TagName.TagName == tag.TagName).AsEnumerable();
+    }
+
     private async Task<Category?> GetRootCategory()
     {
         var (error, categories) = await _repository.GetCategoriesAsync();

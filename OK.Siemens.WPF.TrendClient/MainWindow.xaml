@@ -3,6 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
         xmlns:local="clr-namespace:OK.Siemens.WPF.TrendClient"
         xmlns:vm = "clr-namespace:OK.Siemens.WPF.TrendClient.ViewModels"
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -16,7 +18,7 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="800" Width="1200">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
@@ -67,6 +69,7 @@
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="32"></RowDefinition>
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal">
@@ -75,7 +78,17 @@
                     <!-- Stop getting data -->
                     <Button Margin="10 10  0 0 " Content="Stop"/>
                 </StackPanel>
-                <DockPanel Grid.Row="2" Grid.Column="0" VerticalAlignment="Stretch">
+                <DockPanel Grid.Row="2" Grid.Column="0" Grid.RowSpan="2"
+                           VerticalAlignment="Stretch">
+                    <!-- Date time -->
+                    <TextBox DockPanel.Dock="Top"
+                               Margin="10 10 0 0"
+                               Text="{Binding DateTimeStart,
+                        StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}" />
+                    <TextBox DockPanel.Dock="Top"
+                             Margin="10 10 0 0"
+                             Text="{Binding DateTimeEnd,
+                        StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}" />
                     <!-- Add Category-->
                     <Button DockPanel.Dock="Top"
                             Margin="10 10 0 0"
@@ -83,34 +96,82 @@
                         Add Category
                     </Button>
                     <!-- Categories tree view -->
-                    <TreeView Height="Auto" Margin="10 10 0 5" 
+                    <TreeView Height="Auto" Margin="10 10 0 5"
                               ItemsSource="{Binding Categories}"
                               AllowDrop="True">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseDoubleClick">
+                                <i:InvokeCommandAction
+                                    Command="{Binding DataContext.AddPenCommand, 
+                                    RelativeSource={RelativeSource FindAncestor, 
+                                    AncestorType={x:Type Window}}}" 
+                                    PassEventArgsToCommand="True"/>
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="SelectedItemChanged">
+                                <i:InvokeCommandAction Command="{Binding SelectedItemChangedCommand}"
+                                                       PassEventArgsToCommand="True"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                         <TreeView.ItemTemplate>
                             <HierarchicalDataTemplate ItemsSource="{Binding Tags}">
                                 <TextBlock Text="{Binding Name}" />
                                 <HierarchicalDataTemplate.ItemTemplate>
                                     <DataTemplate DataType="{x:Type models:PlcTag}">
-                                        <TextBlock Text="{Binding TagName}" />
+                                        <TextBlock Text="{Binding TagName}"/>
                                     </DataTemplate>
                                 </HierarchicalDataTemplate.ItemTemplate>
                             </HierarchicalDataTemplate>
                         </TreeView.ItemTemplate>
                     </TreeView>
                 </DockPanel>
-                <!-- test: List with categories -->
-                <ListView Grid.Column="1" Grid.Row="0"
-                          Grid.RowSpan="3"
-                          Margin="10 10 0 0"
-                          ItemsSource="{Binding Categories}">
-                    <ListView.ItemTemplate>
+                <!-- Charts -->
+                <lvc:CartesianChart Grid.Column="1" Grid.Row="0" Grid.RowSpan="3"
+                                    Margin="10"
+                                    Background="{DynamicResource MaterialDesignDivider}"
+                                    Series="{Binding Series}"
+                                    XAxes="{Binding XAxes}" 
+                                    EasingFunction="{x:Null}"/>
+                <!-- Pens - items to be placed on a trend -->
+                <ListView Grid.Row="3" Grid.Column="1" 
+                          MinHeight="120"
+                          Margin="10 0 0 0"
+                          ItemsSource="{Binding PensCollection}"
+                          SelectedItem="{Binding SelectedPen}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDoubleClick">
+                            <i:InvokeCommandAction Command="{Binding RemovePenCommand}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Name}"></TextBlock>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock 
+                                    Text="{Binding Id}">
+                                    <!-- <i:Interaction.Triggers> -->
+                                    <!--     <i:EventTrigger EventName="MouseDoubleClick"> -->
+                                    <!--         <i:InvokeCommandAction Command="{Binding DataContext.RemovePenCommand,  -->
+                                    <!--     RelativeSource={RelativeSource FindAncestor,  -->
+                                    <!--     AncestorType={x:Type Window}}}" -->
+                                    <!--                                CommandParameter="{Binding Tag}"/> -->
+                                    <!--     </i:EventTrigger> -->
+                                    <!-- </i:Interaction.Triggers> -->
+                                </TextBlock>
+                                <TextBlock Margin="10 0 0 0" 
+                                    Text="{Binding Tag.TagName}" />
+                                <!-- <TextBlock Margin="10 0 0 0"  -->
+                                <!--            Text="{Binding DataContext.,  -->
+                                <!--            RelativeSource={RelativeSource FindAncestor,  -->
+                                <!--            AncestorType={x:Type Window}}}" /> -->
+                            </StackPanel>
                         </DataTemplate>
-                    </ListView.ItemTemplate>
+                    </ListBox.ItemTemplate>
                 </ListView>
-                <StatusBar Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2">
-                    <TextBlock Text="{Binding CategoryName}"></TextBlock>
+                <!-- Status bar --> 
+                <StatusBar Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="10 0 0 0" Text="Data collection length: "/>
+                        <TextBlock Text="{Binding ChartItemsCount}"/>
+                    </StackPanel>
                 </StatusBar>
             </Grid>
         </md:DialogHost>
