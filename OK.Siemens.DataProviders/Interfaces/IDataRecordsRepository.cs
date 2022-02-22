@@ -34,14 +34,14 @@ public interface IDataRecordsRepository
     /// Add new category
     /// </summary>
     /// <param name="category"></param>
-    /// <returns>True if operation success</returns>
+    /// <returns>True if error occured</returns>
     Task<(bool error, string message)> AddCategoryAsync(Category category);
     
     /// <summary>
     /// Edit category
     /// </summary>
     /// <param name="category"></param>
-    /// <returns>True if operation success</returns>
+    /// <returns>True if error occured</returns>
     Task<bool> EditCategoryAsync(Category category);
 
     /// <summary>

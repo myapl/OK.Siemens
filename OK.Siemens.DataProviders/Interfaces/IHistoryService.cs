@@ -22,4 +22,19 @@ public interface IHistoryService
     /// </summary>
     /// <returns></returns>
     Task<IEnumerable<PlcTag>> GetTagsAsync();
+
+    /// <summary>
+    /// Add tags to repository
+    /// If category == null put tags to category "root"
+    /// </summary>
+    /// <param name="tags"></param>
+    /// <returns>true in error occured</returns>
+    Task<bool> AddTagsRangeAsync(IEnumerable<PlcTag> tags);
+    
+    /// <summary>
+    /// Add data records to repository
+    /// </summary>
+    /// <param name="dataRecords"></param>
+    /// <returns></returns>
+    Task AddDataRecordsAsync(IEnumerable<DataRecord> dataRecords);
 }

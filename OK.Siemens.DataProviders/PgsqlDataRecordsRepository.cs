@@ -54,6 +54,7 @@ public class PgsqlDataRecordsRepository : IDataRecordsRepository
             var tagPresent = await dbContext.Tags.FirstOrDefaultAsync(t => t.TagName == tag.TagName);
             if (tagPresent == null)
             {
+                dbContext.Categories.Attach(tag.Category!);
                 await dbContext.AddAsync(tag);
             }
         }
@@ -74,7 +75,7 @@ public class PgsqlDataRecordsRepository : IDataRecordsRepository
     /// Add new category
     /// </summary>
     /// <param name="category"></param>
-    /// <returns>True if operation success</returns>
+    /// <returns>True if error occured</returns>
     public async Task<(bool error, string message)> AddCategoryAsync(Category category)
     {
         var dbContext = await _dbContextFactory.CreateDbContextAsync();
@@ -114,7 +115,9 @@ public class PgsqlDataRecordsRepository : IDataRecordsRepository
         try
         {
             var dbContext = await _dbContextFactory.CreateDbContextAsync();
-            return (false, dbContext.Categories.AsNoTracking().AsQueryable());
+            return (false, dbContext.Categories.AsNoTracking()
+                .Include(c=>c.Categories)
+                .Include(c=>c.Tags).AsQueryable());
         }
         catch (Exception e)
         {

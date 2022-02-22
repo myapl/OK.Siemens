@@ -7,14 +7,14 @@ public class Worker : BackgroundService
 {
     private readonly ILogger<Worker> _logger;
     private readonly IPlcSiemensClient _client;
-    private readonly IDataRecordsRepository _repository;
+    private readonly IHistoryService _historyService;
     private readonly IPlcDbParser _plcDbParser;
 
-    public Worker(IPlcSiemensClient client, IDataRecordsRepository repository, IPlcDbParser plcDbParser, ILogger<Worker> logger)
+    public Worker(IPlcSiemensClient client, IHistoryService historyService, IPlcDbParser plcDbParser, ILogger<Worker> logger)
     {
         _logger = logger;
         _client = client;
-        _repository = repository;
+        _historyService = historyService;
         _plcDbParser = plcDbParser;
     }
 
@@ -22,8 +22,9 @@ public class Worker : BackgroundService
     {
         var dataRecords = new List<DataRecord>();
 
-        await _repository.AddTagsAsync(_plcDbParser.ParseCsvFile("tags.csv"));
-        var tagsList = await _repository.GetTagsAsync();
+        await _historyService.AddTagsRangeAsync(_plcDbParser.ParseCsvFile("tags.csv"));
+        
+        var tagsList = await _historyService.GetTagsAsync();
 
         while (!stoppingToken.IsCancellationRequested)
         {
@@ -42,7 +43,7 @@ public class Worker : BackgroundService
                     foreach (var tag in tags)
                         dataRecords.Add(tag.ToDataRecord(receivedTime));
 
-                    await _repository.AddDataRecordsAsync(dataRecords);
+                    await _historyService.AddDataRecordsAsync(dataRecords);
                 }
             }
             //_logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);

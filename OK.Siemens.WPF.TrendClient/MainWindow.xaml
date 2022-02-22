@@ -60,7 +60,7 @@
             <!-- Main window content -->
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="200"></ColumnDefinition>
+                    <ColumnDefinition Width="300"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
@@ -69,10 +69,12 @@
                     <RowDefinition Height="*"></RowDefinition>
                     <RowDefinition Height="32"></RowDefinition>
                 </Grid.RowDefinitions>
-                <!-- Start getting data -->
-                <Button Margin="10 10 0 0 ">Start</Button>
-                <!-- Stop getting data -->
-                <Button Grid.Row="1" Grid.Column="0" Margin="10 10  0 0 ">Stop</Button>
+                <StackPanel Orientation="Horizontal">
+                    <!-- Start getting data -->
+                    <Button Margin="10 10 0 0 " Content="Start" />
+                    <!-- Stop getting data -->
+                    <Button Margin="10 10  0 0 " Content="Stop"/>
+                </StackPanel>
                 <DockPanel Grid.Row="2" Grid.Column="0" VerticalAlignment="Stretch">
                     <!-- Add Category-->
                     <Button DockPanel.Dock="Top"
@@ -81,7 +83,9 @@
                         Add Category
                     </Button>
                     <!-- Categories tree view -->
-                    <TreeView Height="Auto" Margin="10 10 0 5" ItemsSource="{Binding Categories}">
+                    <TreeView Height="Auto" Margin="10 10 0 5" 
+                              ItemsSource="{Binding Categories}"
+                              AllowDrop="True">
                         <TreeView.ItemTemplate>
                             <HierarchicalDataTemplate ItemsSource="{Binding Tags}">
                                 <TextBlock Text="{Binding Name}" />

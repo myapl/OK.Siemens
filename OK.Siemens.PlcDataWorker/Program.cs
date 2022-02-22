@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using OK.Siemens.DataProviders;
 using OK.Siemens.DataProviders.Interfaces;
+using OK.Siemens.DataProviders.Services;
 using OK.Siemens.Models;
 using OK.Siemens.PlcDataWorker;
 using Serilog;
@@ -16,6 +17,7 @@ var host = Host.CreateDefaultBuilder(args)
             options.UseNpgsql(hostBuilder.Configuration["PgsqlConnectionString"]));
         services.AddSingleton<IPlcDbParser, PlcDbParser>();
         services.AddSingleton<IDataRecordsRepository, PgsqlDataRecordsRepository>();
+        services.AddSingleton<IHistoryService, HistoryService>();
         services.Configure<PlcParameters>(hostBuilder.Configuration.GetSection(PlcParameters.Parameters));
         services.AddSingleton<IPlcSiemensClient, PlcSiemensClient>();
         services.AddHostedService<Worker>();

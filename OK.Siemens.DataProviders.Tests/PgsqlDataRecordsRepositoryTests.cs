@@ -134,6 +134,7 @@ public class PgsqlDataRecordsRepositoryTests: IClassFixture<DbContextFixture>
     [Fact]
     public async Task AddTagsAsync_ShouldPresentInRepository()
     {
+        var category = new Category {Name = "Category 1"};
         var data = new List<PlcTag>
         {
             new PlcTag
@@ -141,22 +142,26 @@ public class PgsqlDataRecordsRepositoryTests: IClassFixture<DbContextFixture>
                 DataType = DataType.Bool, 
                 DbAddress = new DbAddress {Bit = 8, Byte = 0}, 
                 Description = "Desc5",
-                TagName = "Tag5"
+                TagName = "Tag5",
+                Category = category
             },
             new PlcTag
             {
                 DataType = DataType.Real, 
                 DbAddress = new DbAddress {Bit = 10, Byte = 0}, 
                 Description = "Desc6",
-                TagName = "Tag6"
+                TagName = "Tag6",
+                Category = category
             }
         };
         var expected = await _fixture.Repository.GetTagsAsync();
         // expected.ToList().AddRange(data);
 
         await _fixture.Repository.AddTagsAsync(data);
+
+        var actualData = (await _fixture.Repository.GetTagsAsync()).ToList();
         
-        Assert.Collection(await _fixture.Repository.GetTagsAsync(), 
+        Assert.Collection(actualData, 
             item => ComparePlcTag(item, expected.ToArray()[0]),
             item => ComparePlcTag(item, expected.ToArray()[1]),
             item => ComparePlcTag(item, expected.ToArray()[2]),
