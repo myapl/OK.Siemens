@@ -129,8 +129,8 @@
                                     Margin="10"
                                     Background="{DynamicResource MaterialDesignDivider}"
                                     Series="{Binding Series}"
-                                    XAxes="{Binding XAxes}" 
-                                    EasingFunction="{x:Null}"/>
+                                    XAxes="{Binding XAxes}"
+                                    EasingFunction="{x:Null}" ZoomMode="X"/>
                 <!-- Pens - items to be placed on a trend -->
                 <ListView Grid.Row="3" Grid.Column="1" 
                           MinHeight="120"

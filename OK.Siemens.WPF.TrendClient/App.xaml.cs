@@ -47,9 +47,9 @@ namespace OK.Siemens.WPF.TrendClient
             if (mainWindowViewModel != null)
             {
                 mainWindowViewModel.GetCategoriesCommand.Execute(null);
-                DateTime.TryParse("2022-02-22 14:43:50", out var start);
+                DateTime.TryParse("2022-02-22 22:59:00", out var start);
                 mainWindowViewModel.DateTimeStart = start;
-                DateTime.TryParse("2022-02-22 15:00:08", out var end);
+                DateTime.TryParse("2022-02-22 23:01:00", out var end);
                 mainWindowViewModel.DateTimeEnd = end;
             }
 

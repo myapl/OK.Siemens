@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Shapes;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -36,6 +38,17 @@ public class MainWindowViewModel: ObservableObject
     private readonly IHistoryService _historyService;
     private readonly BackgroundWorker _worker;
 
+    private const string MOCK_DATA_NAME = "MockData";
+    private LineSeries<DateTimePoint> _mockData = new()
+    {
+        // Name = MOCK_DATA_NAME,
+        // Values = new List<DateTimePoint>
+        // {
+        //     new DateTimePoint(DateTime.UtcNow - TimeSpan.FromMinutes(120), 0),
+        //     new DateTimePoint(DateTime.UtcNow, 0)
+        // }
+    };
+
     public RangeObservableCollection<DateTimePoint> ObservableValues { get; set; }
     public MainWindowViewModel(IHistoryService historyService)
     {
@@ -53,13 +66,17 @@ public class MainWindowViewModel: ObservableObject
 
         ObservableValues = new RangeObservableCollection<DateTimePoint>();
 
-        Series = new ObservableCollection<ISeries>();
+        Series = new ObservableCollection<ISeries>()
+        {
+            //_mockData
+        };
     }
     
     public Axis[] XAxes { get; set; } =
     {
         new Axis
         {
+            
             Labeler = value => new DateTime((long) value).ToString("hh:mm:ss"),
             LabelsRotation = 0,
 
@@ -68,15 +85,16 @@ public class MainWindowViewModel: ObservableObject
             // UnitWidth = TimeSpan.FromMinutes(10).Ticks, // mark
 
             // The MinStep property forces the separator to be greater than 1 day.
-            MinStep = TimeSpan.FromMinutes(3).Ticks // mark
+            //MinStep = TimeSpan.FromMinutes(60).Ticks, // mark
 
             // if the difference between our points is in hours then we would:
-            // UnitWidth = TimeSpan.FromHours(1).Ticks,
+            //UnitWidth = TimeSpan.FromSeconds(1).Ticks,
 
             // since all the months and years have a different number of days
             // we can use the average, it would not cause any visible error in the user interface
             // Months: TimeSpan.FromDays(30.4375).Ticks
             // Years: TimeSpan.FromDays(365.25).Ticks
+            
         }
     };
     
@@ -182,6 +200,9 @@ public class MainWindowViewModel: ObservableObject
         if (listToDelete != null)
             if (listToDelete.Values != null)
                 ChartItemsCount -= listToDelete.Values.OfType<DateTimePoint>().Count();
+        
+        if (Series.Count == 0)
+            Series.Add(_mockData);
     }
 
     private async Task GetCategories()
@@ -208,11 +229,18 @@ public class MainWindowViewModel: ObservableObject
 
         var dataCollection = new ObservableCollection<DateTimePoint>();
         foreach (var dataRecord in data)
-            dataCollection.Add(new DateTimePoint(dataRecord.TimeStamp, dataRecord.Value));
+            dataCollection.Add(new DateTimePoint(dataRecord.TimeStamp, Math.Round((double)dataRecord.Value, 2)));
+
+        var mockData = Series.FirstOrDefault(s => s.Name == MOCK_DATA_NAME);
+        if (mockData != null)
+            Series.Remove(mockData);
+
+        var orderedData = dataCollection.OrderBy(d => d.DateTime).ToList();
         
-        Series.Add(new LineSeries<DateTimePoint>{Values = dataCollection, Name = SelectedTag.TagName, GeometryFill = null,
+        Series.Add(new LineSeries<DateTimePoint>{Values = dataCollection.OrderBy(d => d.DateTime), Name = SelectedTag.TagName, GeometryFill = null,
             GeometryStroke = null});
 
         ChartItemsCount += dataCollection.Count;
+        
     }
 }

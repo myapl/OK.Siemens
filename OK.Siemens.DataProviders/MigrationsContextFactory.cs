@@ -11,7 +11,7 @@ public class MigrationsContextFactory : IDesignTimeDbContextFactory<AppDbContext
     public AppDbContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-        optionsBuilder.UseNpgsql("Host=127.0.0.1;Port=5432;Database=siemens;Username=postgres;Password=dbpass");
+        optionsBuilder.UseNpgsql("Host=127.0.0.1;Port=5435;Database=siemens;Username=postgres;Password=dbpass");
 
         return new AppDbContext(optionsBuilder.Options);
     }

@@ -47,7 +47,7 @@ public class Worker : BackgroundService
                 }
             }
             //_logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-            // await Task.Delay(10000, stoppingToken);
+            await Task.Delay(1000, stoppingToken);
         }
     }
 }
