@@ -15,21 +15,32 @@
 
     <ItemGroup>
       <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0-preview1" />
-      <PackageReference Include="LiveChartsCore" Version="2.0.0-beta.101" />
-      <PackageReference Include="LiveChartsCore.SkiaSharpView" Version="2.0.0-beta.101" />
-      <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-beta.101" />
       <PackageReference Include="MaterialDesignThemes" Version="4.4.0-ci89" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.2" />
       <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.2-mauipre.1.22102.15" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.2-mauipre.1.22102.15" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.2-mauipre.1.22102.15" />
       <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+      <PackageReference Include="SkiaSharp" Version="2.88.0-preview.209" />
+      <PackageReference Include="SkiaSharp.Views.WPF" Version="2.88.0-preview.209" />
     </ItemGroup>
 
     <ItemGroup>
       <None Update="appsettings.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="LiveChartsCore, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\..\LiveCharts2\src\skiasharp\LiveChartsCore.SkiaSharp.WPF\bin\Release\net6.0-windows\LiveChartsCore.dll</HintPath>
+      </Reference>
+      <Reference Include="LiveChartsCore.SkiaSharpView, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\..\LiveCharts2\src\skiasharp\LiveChartsCore.SkiaSharp.WPF\bin\Release\net6.0-windows\LiveChartsCore.SkiaSharpView.dll</HintPath>
+      </Reference>
+      <Reference Include="LiveChartsCore.SkiaSharpView.WPF, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\..\LiveCharts2\src\skiasharp\LiveChartsCore.SkiaSharp.WPF\bin\Release\net6.0-windows\LiveChartsCore.SkiaSharpView.WPF.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>
